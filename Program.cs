@@ -6,24 +6,11 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllers();
+builder.Services.AddSwaggerGen();
+
 
 // Register Swagger/OpenAPI services
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen(options =>
-{
-    // Customize Swagger generation options here if needed
-    options.SwaggerDoc("v1", new OpenApiInfo
-    {
-        Title = "Cube API",
-        Version = "v1",
-        Description = "API for accessing cube data and services",
-        Contact = new OpenApiContact
-        {
-            Name = "David Antonio",  // Replace with your name or organization
-            Email = "cbdasi3v33@estu.unan.edu.ni"  // Replace with your email
-        }
-    });
-});
 
 // Register custom services (SSAS connection and data service)
 builder.Services.AddSingleton<CubeConnection>();  // Cube connection service
