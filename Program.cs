@@ -3,33 +3,48 @@ using cube_api.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-
+// Add services to the container
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
 
-// Registro de servicios personalizados (conexión a SSAS y servicio de datos)
-builder.Services.AddSingleton<CubeConnection>();  // Servicio de conexión al cubo
-builder.Services.AddScoped<CubeDataService>();    // Servicio de consultas al cubo
+// Enable Swagger/OpenAPI generation and UI
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen(options =>
+{
+    // Customize Swagger generation options here if needed
+    // Example: Add a custom description for the API
+    options.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo
+    {
+        Title = "Cube API",
+        Version = "v1",
+        Description = "API for accessing cube data and services",
+        Contact = new Microsoft.OpenApi.Models.OpenApiContact
+        {
+            Name = "Your Name",
+            Email = "your-email@example.com"
+        }
+    });
+});
+
+// Register custom services (SSAS connection and data service)
+builder.Services.AddSingleton<CubeConnection>();  // Cube connection service
+builder.Services.AddScoped<CubeDataService>();    // Cube data query service
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+// Configure the HTTP request pipeline
 if (app.Environment.IsDevelopment())
 {
+    // Enable Swagger middleware for development environment
     app.UseSwagger();
     app.UseSwaggerUI(c =>
     {
-        c.SwaggerEndpoint("/swagger/v1/swagger.json", "cube-api v1");
-        // Opcional: Establecer la ruta predeterminada de Swagger
-        c.RoutePrefix = string.Empty; // Esto habilita Swagger en la raíz del sitio web
+        c.SwaggerEndpoint("/swagger/v1/swagger.json", "Cube API v1");
+        c.RoutePrefix = string.Empty; // Serve Swagger UI at the root of the application
     });
 }
 
 app.UseAuthorization();
 
-app.MapControllers();
+app.MapControllers();  // Map API controllers
 
 app.Run();
