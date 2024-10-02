@@ -11,7 +11,6 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options =>
 {
     // Customize Swagger generation options here if needed
-    // Example: Add a custom description for the API
     options.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo
     {
         Title = "Cube API",
@@ -19,10 +18,12 @@ builder.Services.AddSwaggerGen(options =>
         Description = "API for accessing cube data and services",
         Contact = new Microsoft.OpenApi.Models.OpenApiContact
         {
-            Name = "Your Name",
-            Email = "your-email@example.com"
+            Name = "David Antonio",  // Replace with your name or organization
+            Email = "cbdasi3v33@estu.unan.edu.ni"  // Replace with your email
         }
     });
+
+    // Optionally, add more configuration here if you have more advanced Swagger settings
 });
 
 // Register custom services (SSAS connection and data service)
@@ -34,7 +35,7 @@ var app = builder.Build();
 // Configure the HTTP request pipeline
 if (app.Environment.IsDevelopment())
 {
-    // Enable Swagger middleware for development environment
+    // Enable Swagger middleware for the development environment
     app.UseSwagger();
     app.UseSwaggerUI(c =>
     {
@@ -43,8 +44,11 @@ if (app.Environment.IsDevelopment())
     });
 }
 
+// Enable Authorization middleware (you can add authentication if needed later)
 app.UseAuthorization();
 
-app.MapControllers();  // Map API controllers
+// Map API controllers
+app.MapControllers();
 
 app.Run();
+    
